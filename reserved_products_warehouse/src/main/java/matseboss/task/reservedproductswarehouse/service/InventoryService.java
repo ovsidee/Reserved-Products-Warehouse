@@ -47,7 +47,7 @@ public class InventoryService {
             int newAvailable = current.getAvailable() - qty;
             int newReserved = current.getReserved() + qty;
 
-            boolean success = Boolean.TRUE.equals(transactionTemplate.execute(status -> {
+            boolean isSuccess = Boolean.TRUE.equals(transactionTemplate.execute(status -> {
                 int updated = itemRepository.tryUpdate(sku, expectedVersion, newAvailable, newReserved);
 
                 if (updated == 1) {
@@ -57,8 +57,8 @@ public class InventoryService {
                                 "qty", qty,
                                 "previousVersion", expectedVersion
                         ));
-                        ItemReservedEvent ev = new ItemReservedEvent(sku, "reservedItem", payload);
-                        eventRepository.save(ev);
+                        ItemReservedEvent newItemReservedEvent = new ItemReservedEvent(sku, "reservedItem", payload);
+                        eventRepository.save(newItemReservedEvent);
                         return true;
                     } catch (Exception e) {
                         status.setRollbackOnly();
@@ -68,7 +68,7 @@ public class InventoryService {
                 return false;
             }));
 
-            if (success) return;
+            if (isSuccess) return;
         }
 
         throw new ConflictException("Could not reserve item due to concurrent updates (sku: " + sku + ")");

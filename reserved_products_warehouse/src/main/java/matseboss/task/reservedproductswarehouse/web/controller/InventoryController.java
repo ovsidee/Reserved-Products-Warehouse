@@ -18,6 +18,6 @@ public class InventoryController {
     public ResponseEntity<?> reserve(@PathVariable String sku,
                                      @RequestBody ReserveRequestDTO request) {
         inventoryService.reserve(sku, request.getQty());
-        return ResponseEntity.ok("Item reserved successful");
+        return ResponseEntity.ok("Item reserved successfully");
     }
 }
