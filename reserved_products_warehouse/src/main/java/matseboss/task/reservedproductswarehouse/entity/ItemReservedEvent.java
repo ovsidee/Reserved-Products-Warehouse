@@ -1,10 +1,10 @@
 package matseboss.task.reservedproductswarehouse.entity;
 
 import jakarta.persistence.*;
-import matseboss.task.reservedproductswarehouse.converter.JsonMapConverter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 @Entity
 @Table(name = "item_reserved_event")
@@ -20,21 +20,20 @@ public class ItemReservedEvent {
     private String type;
 
     @Column(name = "payload", nullable = false, columnDefinition = "jsonb")
-    @Convert(converter = JsonMapConverter.class)
-    private Map<String,Object> payload;
+    @JdbcTypeCode(SqlTypes.JSON)
+    private String payload;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    protected ItemReservedEvent() {}
+    public ItemReservedEvent() {}
 
-    public ItemReservedEvent(String sku, String type, Map<String, Object> payload) {
+    public ItemReservedEvent(String sku, String type, String payload) {
         this.sku = sku;
         this.type = type;
         this.payload = payload;
     }
-
 
     public Long getId() {
         return id;
@@ -48,7 +47,7 @@ public class ItemReservedEvent {
         return type;
     }
 
-    public Map<String, Object> getPayload() {
+    public String getPayload() {
         return payload;
     }
 

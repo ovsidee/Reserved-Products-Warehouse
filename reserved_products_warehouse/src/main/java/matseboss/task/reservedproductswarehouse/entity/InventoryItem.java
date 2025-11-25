@@ -19,7 +19,7 @@ public class InventoryItem {
     @Column(name = "version", nullable = false)
     private long version;
 
-    protected InventoryItem() {}
+    public InventoryItem() {}
 
     public InventoryItem(String sku, int available, int reserved, Long version) {
         this.sku = sku;
