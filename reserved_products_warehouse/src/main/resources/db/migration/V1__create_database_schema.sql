@@ -5,7 +5,7 @@ CREATE TABLE inventory_item (
     version BIGINT NOT NULL
 );
 
-CREATE TABLE domain_event (
+CREATE TABLE item_reserved_event (
     id BIGSERIAL PRIMARY KEY,
     sku VARCHAR(255) NOT NULL,
     type VARCHAR(100) NOT NULL,
@@ -14,3 +14,5 @@ CREATE TABLE domain_event (
     CONSTRAINT fk_inventory_item
         FOREIGN KEY(sku) REFERENCES inventory_item(sku)
 );
+
+CREATE INDEX idx_item_reserved_event_sku ON item_reserved_event(sku);
