@@ -2,6 +2,8 @@ package matseboss.task.reservedproductswarehouse.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "inventory_item")
 public class InventoryItem {
@@ -18,6 +20,9 @@ public class InventoryItem {
 
     @Column(name = "version", nullable = false)
     private long version;
+
+    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemReservedEvent> reservedEvents;
 
     public InventoryItem() {}
 
@@ -59,4 +64,6 @@ public class InventoryItem {
     public long getVersion() {
         return version;
     }
+
+
 }

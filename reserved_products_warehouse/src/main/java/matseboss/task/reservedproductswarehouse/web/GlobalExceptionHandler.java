@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidQuantityException.class)
     public ResponseEntity<?> handleInvalidQty(InvalidQuantityException ex) {
         return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", ex.getMessage()));
     }
 

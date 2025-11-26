@@ -13,7 +13,7 @@ public class ItemReservedEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sku", nullable = false)
+    @Column(name = "sku", nullable = false, insertable = false, updatable = false)
     private String sku;
 
     @Column(name = "type", nullable = false)
@@ -26,6 +26,10 @@ public class ItemReservedEvent {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sku", referencedColumnName = "sku", nullable = false)
+    private InventoryItem inventoryItem;
 
     public ItemReservedEvent() {}
 
@@ -53,5 +57,34 @@ public class ItemReservedEvent {
 
     public OffsetDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
+        this.sku = inventoryItem != null ? inventoryItem.getSku() : null;
     }
 }

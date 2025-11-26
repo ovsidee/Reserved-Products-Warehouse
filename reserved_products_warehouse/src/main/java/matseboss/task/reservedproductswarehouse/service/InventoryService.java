@@ -57,7 +57,11 @@ public class InventoryService {
                                 "qty", qty,
                                 "previousVersion", expectedVersion
                         ));
-                        ItemReservedEvent newItemReservedEvent = new ItemReservedEvent(sku, "reservedItem", payload);
+                        ItemReservedEvent newItemReservedEvent = new ItemReservedEvent();
+                        newItemReservedEvent.setInventoryItem(current);
+                        newItemReservedEvent.setType("reservedItem");
+                        newItemReservedEvent.setPayload(payload);
+                        eventRepository.save(newItemReservedEvent);
                         eventRepository.save(newItemReservedEvent);
                         return true;
                     } catch (Exception e) {
