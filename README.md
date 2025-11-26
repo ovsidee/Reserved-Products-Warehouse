@@ -29,10 +29,15 @@ If the CAS update fails (meaning another transaction updated the version first),
 * **Logic:** The service retries the entire process (fetch item, check stock, attempt CAS) up to a **maximum of 3 times**.
 * **Failure:** If all three attempts fail, a `ConflictException` is thrown, resulting in an `HTTP 409 Conflict` response.
 
-### Domain Events
-Domain event `ItemReservedEvent` are persisted in a separate database table `item_reserved_event` as immutable record.
+### Code Architecture
+The following code architecture was used:
 
-* This gives us the opportunity to store the reservation history in the same transaction as the inventory update.
+* **web (Controller layer):** Handles incoming HTTP requests and maps exceptions to HTTP status codes `GlobalExceptionHandler`.
+* **service (Business Layer):** Contains the core logic. It handles the retry logic, manages transactions, and saves data.
+* **repository (Data Access Layer):** Talk to the database. This is where the custom SQL query for safe updates (CAS) is written.
+* **entity (Domain Model):** Represents the database tables `InventoryItem`, `ItemReservedEvent`.
+* **dto (Data Transfer Objects):** Simple objects used just for sending data in and out of the API, so we don't expose our database entities directly.
+* **exception:** Custom error classes that we throw when something goes wrong (e.g., `InsufficientStockException`).
 
 
 
