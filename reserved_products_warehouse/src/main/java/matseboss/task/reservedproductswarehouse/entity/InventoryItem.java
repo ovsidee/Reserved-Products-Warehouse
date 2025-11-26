@@ -56,7 +56,7 @@ public class InventoryItem {
         return reserved;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return version;
     }
 }
