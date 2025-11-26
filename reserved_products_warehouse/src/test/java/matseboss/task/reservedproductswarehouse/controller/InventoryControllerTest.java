@@ -42,14 +42,14 @@ class InventoryControllerTest {
     }
 
     @Test
-    void shouldReturn422_WhenQuantityIsInvalid() throws Exception {
+    void shouldReturn400_WhenQuantityIsInvalid() throws Exception {
         doThrow(new InvalidQuantityException("qty must be > 0"))
                 .when(inventoryService).reserve(anyString(), anyInt());
 
         mockMvc.perform(post("/inventory/sku-1/reserve")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"qty\": -5}"))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("qty must be > 0"));
     }
 

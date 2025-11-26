@@ -62,7 +62,6 @@ public class InventoryService {
                         newItemReservedEvent.setType("reservedItem");
                         newItemReservedEvent.setPayload(payload);
                         eventRepository.save(newItemReservedEvent);
-                        eventRepository.save(newItemReservedEvent);
                         return true;
                     } catch (Exception e) {
                         status.setRollbackOnly();
